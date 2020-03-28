@@ -106,4 +106,4 @@ prompt_context(){
   fi
 }
 
-alias dotfiles='/usr/bin/git --git-dir=/Users/pepe/.dotfiles/ --work-tree=/Users/pepe'
+alias dotfiles='git --git-dir=/Users/pepe/.dotfiles/ --work-tree=/Users/pepe'
