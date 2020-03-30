@@ -68,7 +68,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git fzf)
+plugins=(git fzf zsh-autosuggestions vi-mode zsh-syntax-highlighting)
 # Add osx plugin only in OSX
 [ "$(uname 2> /dev/null)" = "Darwin" ] && plugins+=(osx)
 
