@@ -100,10 +100,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-command -v fzf > /dev/null \
-    && source ~/.dotres/fzf-zsh-completion.sh \
-    && bindkey '^I' fzf_completion
+export FZF_COMPLETION_TRIGGER=',,'
+export FZF_DEFAULT_OPTS='--preview '"'"'[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --theme=TwoDark --style=numbers --color=always {}) 2> /dev/null | head -500'"'"
 
 prompt_context(){
   if [[ -n "$SSH_CLIENT" ]]; then
