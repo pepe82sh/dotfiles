@@ -68,7 +68,9 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git osx)
+plugins=(git fzf)
+# Add osx plugin only in OSX
+[ "$(uname 2> /dev/null)" = "Darwin" ] && plugins+=(osx)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,6 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+command -v fzf > /dev/null \
+    && source ~/.dotres/fzf-zsh-completion.sh \
+    && bindkey '^I' fzf_completion
 
 prompt_context(){
   if [[ -n "$SSH_CLIENT" ]]; then
