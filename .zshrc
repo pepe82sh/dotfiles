@@ -19,3 +19,5 @@ alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
 export EDITOR=vim
 export VISUAL=vim
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
