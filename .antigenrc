@@ -13,8 +13,9 @@ antigen bundle zsh-users/zsh-autosuggestions
 # Select theme
 # This is a workaround. If the theme is loaded twice,
 # something explodes
-THEME=agnoster
-echo ${(f)"$(antigen list)"} | grep "${THEME}" || antigen theme ${THEME}
+#THEME=agnoster
+#echo ${(f)"$(antigen list)"} | grep "${THEME}" || antigen theme ${THEME}
+antigen theme romkatv/powerlevel10k
 # antigen theme denysdovhan/spaceship-prompt
 
 # Tell Antigen that you're done
