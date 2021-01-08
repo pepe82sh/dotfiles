@@ -31,7 +31,7 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # os_icon               # os identifier
-    context                 # user@hostname
+    host                    # $HOST
     dir                     # current directory
     vcs                     # git status
     # prompt_char           # prompt symbol
@@ -1615,6 +1615,19 @@
   function prompt_example() {
     p10k segment -b 1 -f 3 -i '⭐' -t 'hello, %n'
   }
+  # User defined function to print the host. Like context, but with $HOST instead user@hostname
+  function prompt_host() {
+
+      local state
+      if [[ $UID == 0 || $EUID == 0 ]]; then
+          state="ROOT"
+      else
+          state="DEFAULT"
+      fi
+      p10k segment -s $state -t "${HOST}"
+  }
+    typeset -g POWERLEVEL9K_HOST_DEFAULT_FOREGROUND=green
+    typeset -g POWERLEVEL9K_HOST_ROOT_FOREGROUND=red
 
   # User-defined prompt segments may optionally provide an instant_prompt_* function. Its job
   # is to generate the prompt segment for display in instant prompt. See
@@ -1634,6 +1647,7 @@
     # and regular prompts.
     prompt_example
   }
+
 
   # User-defined prompt segments can be customized the same way as built-in segments.
   typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=3
