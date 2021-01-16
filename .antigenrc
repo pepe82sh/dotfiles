@@ -4,8 +4,7 @@ antigen use oh-my-zsh
 # Load bundles from the default repo (oh-my-zsh)
 antigen bundle git
 [ -x "$(command -v fzf)" ] && antigen bundle fzf
-#antigen bundle vi-mode
-antigen bundle jeffreytse/zsh-vi-mode
+antigen bundle vi-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 # Add osx plugin only in OSX
