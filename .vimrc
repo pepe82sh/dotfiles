@@ -80,11 +80,11 @@ syntax on
 set number
 set ruler
 set cursorline
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,WinEnter,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,WinLeave,InsertEnter   * set norelativenumber
-augroup END
+"augroup numbertoggle
+"  autocmd!
+"  autocmd BufEnter,FocusGained,WinEnter,InsertLeave * set relativenumber
+"  autocmd BufLeave,FocusLost,WinLeave,InsertEnter   * set norelativenumber
+"augroup END
 
 " Disable Backup and Swap files
 set noswapfile
