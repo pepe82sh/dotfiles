@@ -31,3 +31,7 @@ export VISUAL=vim
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# For local customizations, use .zshrc.local
+[[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
+
