@@ -23,6 +23,7 @@ export FZF_DEFAULT_OPTS='--preview '"'"'[[ $(file --mime {}) =~ binary ]] && ech
 #}
 
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
+alias vim=nvim
 
 export EDITOR=vim
 export VISUAL=vim
