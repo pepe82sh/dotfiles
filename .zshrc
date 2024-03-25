@@ -5,6 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# For local special antigen config use .antigenrc.pre.local
+[[ ! -f ~/.antigenrc.pre.local ]] || source ~/.antigenrc.pre.local
+
 # use antigen for plugin management
 source ${HOME}/.rcscripts/antigen.zsh
 
