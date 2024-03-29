@@ -4,10 +4,10 @@ antigen use oh-my-zsh
 # Load bundles from the default repo (oh-my-zsh)
 antigen bundle git
 [ -x "$(command -v fzf)" ] && antigen bundle fzf
-antigen bundle vi-mode
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle tmux
+# Load tmux bundle only when tmux is installed
+[ -x "$(command -v tmux)" ] && antigen bundle tmux
 # Add osx plugin only in OSX
 [ "$(uname 2> /dev/null)" = "Darwin" ] && antigen bundle macos
 

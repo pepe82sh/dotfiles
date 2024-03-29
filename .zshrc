@@ -39,3 +39,6 @@ export VISUAL=vim
 # For local customizations, use .zshrc.local
 [[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
 
+# Enable vim mode
+bindkey -v
+
