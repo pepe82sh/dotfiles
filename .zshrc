@@ -18,18 +18,22 @@ antigen init ${HOME}/.antigenrc
 export FZF_COMPLETION_TRIGGER=',,'
 export FZF_DEFAULT_OPTS='--preview '"'"'[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --theme=TwoDark --style=numbers --color=always {}) 2> /dev/null | head -500'"'"
 
-#prompt_context(){
-#  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-#    prompt_segment black default "%(!.%{%F{yellow}%}.)$HOST"
-    #prompt_segment black default "$HOST"
-#  fi
-#}
-
 alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
-alias vim=nvim
 
-export EDITOR=vim
-export VISUAL=vim
+if [[ -x "$(command -v nvim)" ]]; then
+  alias vi=nvim
+  alias vim=nvim
+  export EDITOR=nvim
+  export VISUAL=nvim
+elif [[ -x "$(command -v vim)" ]]; then
+  alias vi=vim
+  export EDITOR=vim
+  export VISUAL=vim
+fi
+
+if [[ -x "$(command -v lazygit)" ]]; then
+  alias lg=lazygit
+fi
 
 [[ -x "$(command -v foo)" && -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
