@@ -13,13 +13,20 @@ return { -- Autoformat
       }
     end,
     formatters_by_ft = {
-      lua = { 'stylua' },
+      cmake = { 'cmake-format' },
       -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
+      python = { 'isort', 'autopep8', 'auotflake' },
       --
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
       -- javascript = { { "prettierd", "prettier" } },
+      cpp = { 'clang-format' },
+    },
+    -- Customize formatters
+    formatters = {
+      autopep8 = {
+        prepend_args = { '--max-line-length=120' },
+      },
     },
   },
 }

@@ -4,16 +4,16 @@ return { -- LSP Configuration & Plugins
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for Neovim
     -- dependencies mason shall only be installed on non BSD system. See end of file
-    { 'williamboman/mason.nvim', enabled = (jit.os ~= 'BSD') },
-    { 'williamboman/mason-lspconfig.nvim', enabled = (jit.os ~= 'BSD') },
+    { 'williamboman/mason.nvim',                   enabled = (jit.os ~= 'BSD') },
+    { 'williamboman/mason-lspconfig.nvim',         enabled = (jit.os ~= 'BSD') },
     { 'WhoIsSethDaniel/mason-tool-installer.nvim', enabled = (jit.os ~= 'BSD') },
     -- Useful status updates for LSP.
     -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim', opts = {} },
+    { 'j-hui/fidget.nvim',                         opts = {} },
 
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
-    { 'folke/neodev.nvim', opts = {} },
+    { 'folke/neodev.nvim',                         opts = {} },
   },
 
   config = function()
@@ -77,11 +77,11 @@ return { -- LSP Configuration & Plugins
 
         -- Fuzzy find all the symbols in your current document.
         --  Symbols are things like variables, functions, types, etc.
-        map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+        map('<leader>ssd', require('telescope.builtin').lsp_document_symbols, '[S]earch [S]ymbols [D]ocument')
 
         -- Fuzzy find all the symbols in your current workspace.
         --  Similar to document symbols, except searches over your entire project.
-        map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+        map('<leader>ssw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]earch [S]ymbols [W]orkspace')
 
         -- Rename the variable under your cursor.
         --  Most Language Servers support renaming across files, etc.
@@ -136,9 +136,19 @@ return { -- LSP Configuration & Plugins
     --  - settings (table): Override the default settings passed when initializing the server.
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
-      -- clangd = {},
+      clangd = {},
       -- gopls = {},
-      -- pyright = {},
+      pyright = {
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              diagnosticMode = 'openFilesOnly',
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },
+      },
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
@@ -148,6 +158,11 @@ return { -- LSP Configuration & Plugins
       -- But for many setups, the LSP (`tsserver`) will work just fine
       -- tsserver = {},
       --
+      cmake = {
+        init_options = {
+          buildDirectory = 'build/Native/',
+        },
+      },
     }
 
     -- lua ls isn't available on FreeBSD
@@ -178,7 +193,12 @@ return { -- LSP Configuration & Plugins
       -- -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua',    -- Used to format Lua code
+        'cmakelang', -- cmake formatting
+        'autopep8',  -- python formatting
+        'autoflake', -- python formatting
+        'isort',     -- python formatting
+        'debugpy',   -- python debugger
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
