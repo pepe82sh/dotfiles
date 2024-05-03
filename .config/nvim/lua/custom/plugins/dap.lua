@@ -5,6 +5,9 @@ return {
       local dap = require("dap")
       vim.keymap.set('n', '<leader>dc', dap.continue, { desc = '[D]ebug [C]ontinue' })
       vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = '[D]ebug Toggle [B]reakpoint' })
+      if vim.fn.executable('gdb') == 1 then
+        require('custom.plugins.dap.c')
+      end
     end
   },
   {
