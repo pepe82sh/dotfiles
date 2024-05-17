@@ -4,6 +4,7 @@ return {
     "nvim-neotest/nvim-nio",
     "nvim-lua/plenary.nvim",
     "alfaix/neotest-gtest",
+    "nvim-neotest/neotest-python",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter"
   },
@@ -17,9 +18,13 @@ return {
     vim.keymap.set('n', '<leader>tw', function() neotest.watch.toggle() end, { desc = '[T]est toggle [W]atch' })
     neotest.setup({
       adapters = {
-        require("neotest-gtest").setup({
-          debug_adapter = "gdb"
-        })
+        require("neotest-python")({
+          runner = "pytest",
+          python = ".venv/bin/python"
+        }),
+        --require("neotest-gtest").setup({
+        --  debug_adapter = "gdb"
+        --}),
       }
     })
   end
