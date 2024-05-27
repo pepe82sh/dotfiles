@@ -195,10 +195,12 @@ return { -- LSP Configuration & Plugins
       vim.list_extend(ensure_installed, {
         'stylua',    -- Used to format Lua code
         'cmakelang', -- cmake formatting
-        'autopep8',  -- python formatting
-        'autoflake', -- python formatting
-        'isort',     -- python formatting
-        'debugpy',   -- python debugger
+        -- 'autopep8',  -- python formatting
+        -- 'autoflake', -- python formatting
+        'black',   -- python formatting
+        'flake8',  -- python formatting
+        'isort',   -- python formatting
+        'debugpy', -- python debugger
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

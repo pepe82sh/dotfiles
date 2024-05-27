@@ -15,7 +15,7 @@ return { -- Autoformat
     formatters_by_ft = {
       cmake = { 'cmake-format' },
       -- Conform can also run multiple formatters sequentially
-      python = { 'isort', 'autopep8', 'auotflake' },
+      python = { 'isort', 'black', 'flake8' },
       --
       -- You can use a sub-list to tell conform to run *until* a formatter
       -- is found.
@@ -24,9 +24,14 @@ return { -- Autoformat
     },
     -- Customize formatters
     formatters = {
-      autopep8 = {
-        prepend_args = { '--max-line-length=120' },
+      flake8 = {
+        inherit = false,
+        command = 'flake8',
+        args = { '--max-line-length=120', '--extended-ignore=E203', '$FILENAME' },
       },
+      isort = {
+        prepend_args = { '--profile', 'black', '--filter-files' }
+      }
     },
   },
 }
