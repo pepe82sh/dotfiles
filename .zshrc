@@ -20,6 +20,7 @@ source ${HOME}/.rcscripts/antigen.zsh
 # Load antigen configurations
 antigen init ${HOME}/.antigenrc
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=60"
 
 export FZF_COMPLETION_TRIGGER=',,'
 export FZF_DEFAULT_OPTS='--preview '"'"'[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --theme=TwoDark --style=numbers --color=always {}) 2> /dev/null | head -500'"'"
