@@ -1,4 +1,6 @@
-if [[ -x "$(command -v neofetch)" ]]; then
+if [[ -x "$(command -v fastfetch)" ]]; then
+  fastfetch
+elif [[ -x "$(command -v neofetch)" ]]; then
   neofetch
 fi
 
