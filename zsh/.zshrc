@@ -25,7 +25,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=60"
 export FZF_COMPLETION_TRIGGER=',,'
 export FZF_DEFAULT_OPTS='--preview '"'"'[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --theme=TwoDark --style=numbers --color=always {}) 2> /dev/null | head -500'"'"
 
-alias dotfiles='git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME}'
+export STOW_DIR="${HOME}/.dotfiles"
 
 if [[ -x "$(command -v nvim)" ]]; then
   alias vi=nvim
