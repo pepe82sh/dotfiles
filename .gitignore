@@ -1,2 +1,3 @@
 tmux/.tmux/plugins/*
 !tmux/.tmux/plugins/tpm
+zsh/.config/zsh/.zsh_history
