@@ -1,5 +1,6 @@
 ZSHRCD="${HOME}/.zshrc.d"
 
+source "${ZDOTDIR}/settings.zsh"
 source "${ZDOTDIR}/exports.zsh"
 source "${ZDOTDIR}/aliases.zsh"
 source "${ZDOTDIR}/plugins.zsh"
