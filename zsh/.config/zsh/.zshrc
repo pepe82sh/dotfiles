@@ -13,6 +13,12 @@ if [ -d "$ZSHRCD" ]; then
 done
 fi
 
+# history
+HISTFILE="${ZDOTDIR}/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
 #[[ -x "$(command -v foo)" && -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 bindkey '^[[A' history-substring-search-up
