@@ -23,3 +23,6 @@ setopt appendhistory
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
