@@ -1,7 +1,7 @@
 if [[ -x "$(command -v fastfetch)" ]]; then
-  fastfetch
+  [[ $TERM =~ "tmux" ]] || fastfetch
 elif [[ -x "$(command -v neofetch)" ]]; then
-  neofetch
+  [[ $TERM =~ "tmux" ]] || neofetch
 fi
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=60"
