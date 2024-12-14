@@ -1,0 +1,239 @@
+#compdef bastille
+
+local mainopt; mainopt=(
+  {-v,--version}'[display version information]'
+  {-h,--help}'[display help]'
+)
+
+local cpopts; cpopts=(
+  {-q,--quiet}'[Be quiet]'
+)
+
+local listopts; listopts=(
+  '-a[all]'
+  '-j[JSON]'
+)
+
+local bpkgopts; bpkgopts=(
+  {-H,--host}'[Use host pkg]'
+)
+
+local createopts; IFS=$'\n'; createopts=(
+ $(bastille create -h 2>/dev/null | \
+   sed -n -E "s/^[[:space:]]*(-[[:alnum:]])[[:space:]]+\|[[:space:]]+(--[[:alnum:]]+)[[:space:]]+--[[:space:]]+(.*)$/\1[\3]\n\2[\3]/p")
+)
+
+local exportopts; IFS=$'\n'; exportopts=(
+  $(bastille export -h 2>/dev/null | \
+    sed -n -E "s/^[[:space:]]+((-[[:alnum:]])[[:space:]]+\|[[:space:]]+)?(--[[:alnum:]]+)[[:space:]]+--[[:space:]]+(.*)$/\2[\4]\n\3[\4]/p" | grep "^-")
+)
+
+local importopts; IFS=$'\n'; importopts=(
+  $(bastille import -h 2>/dev/null | \
+    sed -n -E "s/^[[:space:]]+((-[[:alnum:]])[[:space:]]+\|[[:space:]]+)?(--[[:alnum:]]+)[[:space:]]+--[[:space:]]+(.*)$/\2[\4]\n\3[\4]/p" | grep "^-")
+)
+
+local jaillist; IFS=$'\n'; jaillist=( $(bastille list -a | tail -n+2 | \
+  sed -n -E "s/^[[:space:]]*([[:alnum:]]+)[[:space:]]+/\1:/p"))
+
+local subcmds; IFS=$'\n'; subcmds=($(bastille -h | \
+  sed -n -E "s/^[[:space:]]+([[:alnum:]]+)[[:space:]]+/\1:/p" | tail -n+2))
+
+local releases; IFS=$'\n'; releases=($(bastille list release))
+
+# _jails
+(( $+functions[_jaillist] )) ||
+_jaillist() {
+  _describe 'jail' jaillist
+}
+
+# jails_with_ALL
+(( $+functions[_jails_with_ALL] )) ||
+_jails_with_ALL() {
+  local jaillist2; jaillist2=( $jaillist )
+  jaillist2+="ALL:All jails"
+  _describe 'jailall' jaillist2
+}
+
+# _subcommands
+(( $+functions[_subcommands] )) ||
+_subcommands() {
+  _describe 'command' subcmds
+}
+
+# _jail_params
+(( $+functions[_jail_params] )) ||
+_jail_params() {
+  local paramlist; IFS=$'\n'; paramlist=( $(sysctl -d security.jail.param | tail -n+2 | \
+    sed -n -E "s/^security\.jail\.param\.(.*[^.]:)/\1/p"))
+
+  _describe 'jail_params' paramlist
+}
+
+# _releases
+(( $+functions[_releases] )) ||
+_releases() {
+  _describe 'releases' releases
+}
+
+# _destroy_targets
+(( $+functions[_destroy_targets] )) ||
+_destroy_targets() {
+  _releases
+  _jaillist
+}
+
+# _listargs
+(( $+functions[_listargs] )) ||
+_listargs() {
+  _alternative \
+    'listtypes:listtype:(a b)' \
+    'jails:jail:_jaillist'
+}
+
+_arguments -C \
+  '(- 1 *)'$mainopt \
+  '1: :_subcommands' \
+  '*:: :->cmd_args' && ret=0
+
+#Use "bastille -v|--version" for version information.
+#Use "bastille command -h|--help" for more information about a command.
+
+case $state in
+  cmd_args)
+    case $line[1] in
+      (clone|cmd|console|convert|rdr|rename|restart|service|start|stop|sysrc|top|umount)
+        _jaillist
+        ;;
+      config)
+        _arguments \
+          ': :_jails_with_ALL' \
+          ': :(get set)' \
+          ': :_jail_params' && ret=0
+        ;;
+      (cp|rcp)
+        _arguments -C \
+          $cpopts \
+          ': :_jails_with_ALL' \
+          ': :_files' \
+          ': :->cp_target' && ret=0
+
+        case $state in
+          cp_target)
+              jailroot="$(bastille config $line[1] get path)"
+            _files -W $jailroot
+            ;;
+        esac
+          ;;
+      create)
+        _arguments -A "-*" \
+          $createopts \
+          ': : ' \
+          ': :_releases' && ret=0
+        ;;
+      destroy)
+        _arguments \
+          ':: :(force)' \
+          ': :_destroy_targets' && ret=0
+        ;;
+      edit)
+        _arguments -C \
+          ': :_jaillist' \
+          ': :->edit_fileselect' && ret=0
+
+        case $state in
+          edit_fileselect)
+            jailroot="$(bastille config $line[1] get path)/.."
+            _files -W $jailroot
+            ;;
+        esac
+        ;;
+      export)
+        _arguments -A "-*" \
+          $exportopts \
+          ': :_jaillist' \
+          ': :_files' && ret=0
+        ;;
+      help)
+        ;;
+      htop)
+        _jaillist
+        ;;
+      import)
+        _arguments -A "-*" \
+          $importopts \
+          ': :_files' && ret=0
+        ;;
+      limits)
+        _jaillist
+        ;;
+      list)
+        _arguments -A "-*" \
+          $listopts \
+          ':: :(release template jail container log limit)' && ret=0
+        ;;
+      mount)
+        _arguments -C \
+          ': :_jaillist' \
+          ': :_files' \
+          ': :->mount_fileselect' && ret=0
+
+        case $state in
+          mount_fileselect)
+            jailroot="$(bastille config $line[1] get path)"
+            _files -W $jailroot
+            ;;
+        esac
+        ;;
+      pkg)
+        _arguments -A "-*" \
+          $bpkgopts \
+          ': :_jails_with_ALL' && ret=0
+        #  ': :->pkg_command' && ret=0
+        #case $state in
+        #  pkg_command)
+        #    _dispatch pkg pkg && ret=0
+        #    ;;
+        #esac
+        ;;
+      setup)
+        ;;
+      tags)
+        _arguments -A "-*" \
+          ': :_jails_with_ALL' \
+          ': :(add delete list)' && ret=0
+        ;;
+      template)
+        _arguments -A "-*" \
+          ': :_jails_with_ALL' \
+          ': :_files -W /usr/local/bastille/templates' && ret=0
+        ;;
+      (update|upgrade)
+        _arguments \
+          ': :_destroy_targets' \
+          ':: :(force)'  && ret=0
+        ;;
+      verify)
+        _arguments -A "-*" \
+          ': :_releases' && ret=0
+        ;;
+      zfs)
+        _arguments -A "-*" \
+          ': :_jails_with_ALL' \
+          ': :(set get snap)' && ret=0
+        ;;
+      *)
+        ;;
+    esac
+    ;;
+esac
+
+return ret
+
+# Local Variables:
+# mode: Shell-Script
+# sh-indentation: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# End:
+# vim: ft=zsh sw=2 ts=2 et
