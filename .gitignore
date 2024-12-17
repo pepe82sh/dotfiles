@@ -1,5 +1,4 @@
-tmux/.tmux/plugins/*
-!tmux/.tmux/plugins/tpm
+tmux/.tmux/plugins
 zsh/.config/zsh/.zsh_history
 nvim/.config/nvim/lazy-lock.json
 zsh/.config/zsh/.antidote
